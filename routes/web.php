@@ -50,6 +50,8 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->group(function () {
 
     // Rute Proses Checkout (Ke Midtrans)
     Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
+
+    Route::get('/ticket/{id}', [TransactionController::class, 'showTicket'])->name('ticket.show');
 });
 
 // Tambahkan rute detail event (Publik) di bawah rute home
