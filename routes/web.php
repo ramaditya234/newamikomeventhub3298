@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\EventController;
 
@@ -43,7 +44,11 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->group(function () {
         return "Ini adalah Dashboard User untuk melihat tiket.";
     })->name('user.dashboard');
     
-    // Nanti rute Checkout, Cart, Tiket taruh di sini
+    // Rute Submit Keranjang dari Halaman Detail (Yang kita buat di langkah sebelumnya)
+    Route::post('/cart/add/{id}', [CartController::class, 'store'])->name('cart.store');
+
+    // Rute Proses Checkout (Ke Midtrans)
+    Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
 });
 
 // Tambahkan rute detail event (Publik) di bawah rute home
