@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\Admin\EventController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -33,6 +33,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
         return "Ini adalah Halaman Admin. Layout sidebar gelap akan diterapkan di sini.";
     })->name('admin.dashboard');
     
+    Route::resource('events', EventController::class);
     // Nanti rute CRUD Event, Kategori, Laporan taruh di sini
 });
 
