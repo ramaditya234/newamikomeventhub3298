@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\EventController;
@@ -63,3 +64,6 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(f
     // Rute Submit Keranjang
     Route::post('/cart/add/{id}', [CartController::class, 'store'])->name('cart.store');
 });
+
+// Endpoint Webhook Midtrans
+Route::post('/midtrans/callback', [MidtransWebhookController::class, 'handle']);
