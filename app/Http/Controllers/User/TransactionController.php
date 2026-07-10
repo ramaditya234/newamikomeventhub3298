@@ -110,4 +110,16 @@ class TransactionController extends Controller
             return back()->withErrors(['pesan' => 'Gagal memproses checkout: ' . $e->getMessage()]);
         }
     }
+
+    public function showTicket($id)
+    {
+        // Pastikan tiket milik user yang sedang login
+        $ticket = Ticket::with(['transaction', 'event'])
+            ->whereHas('transaction', function($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->findOrFail($id);
+
+        return view('user.ticket', compact('ticket'));
+    }
 }
