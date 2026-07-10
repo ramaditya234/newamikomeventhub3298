@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\Admin\EventController;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Auth Routes (Hanya untuk yang belum login)
 Route::middleware('guest')->group(function () {
@@ -44,4 +44,17 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->group(function () {
     })->name('user.dashboard');
     
     // Nanti rute Checkout, Cart, Tiket taruh di sini
+});
+
+// Tambahkan rute detail event (Publik) di bawah rute home
+Route::get('/event/{id}', [HomeController::class, 'show'])->name('event.show');
+
+// Perbarui area khusus User (Pembeli) untuk menambahkan rute Cart
+Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {
+    Route::get('/dashboard', function () {
+        return "Ini adalah Dashboard User untuk melihat keranjang dan tiket.";
+    })->name('dashboard');
+    
+    // Rute Submit Keranjang
+    Route::post('/cart/add/{id}', [CartController::class, 'store'])->name('cart.store');
 });
